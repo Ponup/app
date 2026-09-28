@@ -1,0 +1,33 @@
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
+        with: { python-version: "3.12" }
+      - run: uv sync --all-groups
+        working-directory: backend
+      - run: uv run ruff check .
+        working-directory: backend
+      - run: uv run pytest
+        working-directory: backend
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 12.6.0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm, cache-dependency-path: frontend/pnpm-lock.yaml }
+      - run: pnpm install --frozen-lockfile=false
+        working-directory: frontend
+      - run: pnpm lint
+        working-directory: frontend
+      - run: pnpm test -- --run
+        working-directory: frontend
+      - run: pnpm build
+        working-directory: frontend
