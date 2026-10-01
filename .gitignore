@@ -13,3 +13,4 @@ coverage/
 .coverage
 *.egg-info/
 .DS_Store
+*.tsbuildinfo
