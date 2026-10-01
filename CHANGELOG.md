@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add a Settings tab to spaces with a confirmed option to permanently delete the space and its content.
+- Add contributor setup, testing, pull-request, and changelog guidance.
 
 ### Changed
 
