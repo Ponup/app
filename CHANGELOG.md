@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## Changed
+### Added
+
+- Add a Settings tab to spaces with a confirmed option to permanently delete the space and its content.
+
+### Changed
 
 - Use official project logo on the frontend.
 

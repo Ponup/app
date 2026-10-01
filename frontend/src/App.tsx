@@ -35,13 +35,24 @@ function Welcome({ hasSpaces }: { hasSpaces: boolean }) {
 function SpaceView() {
   const { spaceId = '' } = useParams()
   const [adding, setAdding] = useState(false)
-  const [mode, setMode] = useState<'library' | 'search'>('library')
+  const [mode, setMode] = useState<'library' | 'search' | 'settings'>('library')
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const space = useQuery({ queryKey: ['space', spaceId], queryFn: () => api.space(spaceId) })
   const contents = useQuery({ queryKey: ['contents', spaceId], queryFn: () => api.contents(spaceId), refetchInterval: (q) => q.state.data?.some((item) => ['queued', 'processing'].includes(item.processing_status)) ? 2000 : false })
+  const remove = useMutation({
+    mutationFn: () => api.deleteSpace(spaceId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['spaces'] })
+      navigate('/')
+    },
+  })
   return <div className="page">
     <header className="page-header"><div><p className="eyebrow">Space</p><h1>{space.data?.name || 'Loading…'}</h1><p>{space.data?.description}</p></div><button className="button" onClick={() => setAdding(true)}>+ Add Content</button></header>
-    <div className="view-tabs"><button className={mode === 'library' ? 'active' : ''} onClick={() => setMode('library')}>Library <b>{contents.data?.length || 0}</b></button><button className={mode === 'search' ? 'active' : ''} onClick={() => setMode('search')}>Semantic search</button></div>
-    {mode === 'search' ? <SearchPanel spaceId={spaceId} /> : <ContentGrid values={contents.data || []} />}
+    <div className="view-tabs"><button className={mode === 'library' ? 'active' : ''} onClick={() => setMode('library')}>Library <b>{contents.data?.length || 0}</b></button><button className={mode === 'search' ? 'active' : ''} onClick={() => setMode('search')}>Semantic search</button><button className={mode === 'settings' ? 'active' : ''} onClick={() => setMode('settings')}>Settings</button></div>
+    {mode === 'library' && <ContentGrid values={contents.data || []} />}
+    {mode === 'search' && <SearchPanel spaceId={spaceId} />}
+    {mode === 'settings' && <section className="danger space-danger"><div><strong>Delete Space</strong><p>Permanently remove this Space, including all of its Content and search index.</p></div><button disabled={remove.isPending} onClick={() => confirm(`Delete “${space.data?.name || 'this Space'}” permanently?`) && remove.mutate()}>Delete Space</button>{remove.error && <p className="error">{remove.error.message}</p>}</section>}
     {adding && <NewContent spaceId={spaceId} close={() => setAdding(false)} />}
   </div>
 }

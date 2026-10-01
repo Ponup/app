@@ -56,6 +56,7 @@ export const api = {
   spaces: () => request<Space[]>('/api/v1/spaces'),
   space: (id: string) => request<Space>(`/api/v1/spaces/${id}`),
   createSpace: (data: { name: string; description: string }) => request<Space>('/api/v1/spaces', { method: 'POST', body: JSON.stringify(data) }),
+  deleteSpace: (id: string) => request<void>(`/api/v1/spaces/${id}`, { method: 'DELETE' }),
   contents: (spaceId: string) => request<Content[]>(`/api/v1/spaces/${spaceId}/contents`),
   content: (id: string) => request<Content>(`/api/v1/contents/${id}`),
   createContent: (spaceId: string, data: object) => request<Content>(`/api/v1/spaces/${spaceId}/contents`, { method: 'POST', body: JSON.stringify(data) }),
