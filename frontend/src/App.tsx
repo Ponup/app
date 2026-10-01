@@ -5,6 +5,7 @@ import { api, API_URL, type Content } from './lib/api'
 import { NewContent } from './components/NewContent'
 import { SearchPanel } from './components/SearchPanel'
 import { Status, Tags } from './components/Status'
+import icon from './icon.png'
 
 function Shell() {
   const spaces = useQuery({ queryKey: ['spaces'], queryFn: api.spaces })
@@ -17,7 +18,7 @@ function Shell() {
   })
   return <div className="shell">
     <aside>
-      <Link className="brand" to="/"><span className="mark">P</span><strong>Ponup</strong></Link>
+      <Link className="brand" to="/"><img className="mark" src={icon} alt="Ponup" /><strong>Ponup</strong></Link>
       <div className="aside-heading"><span>Spaces</span><button aria-label="Create Space" onClick={() => setCreating(true)}>+</button></div>
       <nav>{spaces.data?.map((space) => <NavLink key={space.id} to={`/spaces/${space.id}`}><span>{space.name.slice(0, 1).toUpperCase()}</span><div><strong>{space.name}</strong><small>{space.description || 'No description'}</small></div></NavLink>)}</nav>
       <footer><a href={`${API_URL}/docs`} target="_blank">API docs ↗</a><a href={`${API_URL}/graphql`} target="_blank">GraphQL ↗</a></footer>
@@ -28,7 +29,7 @@ function Shell() {
 }
 
 function Welcome({ hasSpaces }: { hasSpaces: boolean }) {
-  return <div className="welcome"><div className="orb">P</div><p className="eyebrow">Context, made useful</p><h1>Your knowledge.<br /><em>Ready when needed.</em></h1><p>Ponup keeps human-readable content and agent-ready context in the same calm, searchable place.</p><p className="hint">{hasSpaces ? 'Choose a Space to continue.' : 'Create your first Space with the + button.'}</p></div>
+  return <div className="welcome"><img className="orb" src={icon} alt="" /><p className="eyebrow">Context, made useful</p><h1>Your knowledge.<br /><em>Ready when needed.</em></h1><p>Ponup keeps human-readable content and agent-ready context in the same calm, searchable place.</p><p className="hint">{hasSpaces ? 'Choose a Space to continue.' : 'Create your first Space with the + button.'}</p></div>
 }
 
 function SpaceView() {
