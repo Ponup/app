@@ -44,6 +44,29 @@ class ContentCreate(BaseModel):
         return sorted({tag.strip().lower() for tag in tags if tag.strip()})
 
 
+class ContentGenerate(BaseModel):
+    title: str = Field(min_length=1, max_length=200)
+    description: str = Field(default="", max_length=2_000)
+    kind: ContentKind
+    tags: list[str] = Field(default_factory=list)
+
+    @field_validator("kind")
+    @classmethod
+    def requires_authored_content(cls, kind: ContentKind) -> ContentKind:
+        if kind == ContentKind.file:
+            raise ValueError("Content generation is only available for Markdown or JSON")
+        return kind
+
+    @field_validator("tags")
+    @classmethod
+    def normalize_tags(cls, tags: list[str]) -> list[str]:
+        return sorted({tag.strip().lower() for tag in tags if tag.strip()})
+
+
+class ContentGenerateOut(BaseModel):
+    body: str | dict[str, Any] | list[Any]
+
+
 class ContentUpdate(BaseModel):
     title: str | None = Field(default=None, min_length=1, max_length=200)
     slug: str | None = Field(default=None, max_length=100)

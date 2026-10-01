@@ -15,6 +15,10 @@ x-backend-environment: &backend-environment
   OPENAI_COMPATIBLE_BASE_URL: ${OPENAI_COMPATIBLE_BASE_URL:-}
   OPENAI_COMPATIBLE_API_KEY: ${OPENAI_COMPATIBLE_API_KEY:-}
   OPENAI_COMPATIBLE_MODEL: ${OPENAI_COMPATIBLE_MODEL:-text-embedding-3-small}
+  LLM_BASE_URL: ${LLM_BASE_URL:-http://host.docker.internal:11434/v1}
+  LLM_API_KEY: ${LLM_API_KEY:-}
+  LLM_MODEL: ${LLM_MODEL:-llama3.2}
+  LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
 
 services:
   postgres:
@@ -23,18 +27,18 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-ponup}
       POSTGRES_USER: ${POSTGRES_USER:-ponup}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ponup}
-    volumes: [postgres_data:/var/lib/postgresql/data]
+    volumes: [ postgres_data:/var/lib/postgresql/data ]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ponup} -d ${POSTGRES_DB:-ponup}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ponup} -d ${POSTGRES_DB:-ponup}" ]
       interval: 5s
       timeout: 5s
       retries: 20
   redis:
     image: redis:7-alpine
     command: redis-server --appendonly yes
-    volumes: [redis_data:/data]
+    volumes: [ redis_data:/data ]
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -44,39 +48,41 @@ services:
       RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY:-ponup}
       RUSTFS_SECRET_KEY: ${S3_SECRET_KEY:-ponup-development}
     command: /data
-    volumes: [rustfs_data:/data]
+    volumes: [ rustfs_data:/data ]
   api:
     build: ./backend
     environment: *backend-environment
-    command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
-    volumes: [embedding_cache:/root/.cache/huggingface]
-    ports: ["8000:8000"]
+    command: [ "sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000" ]
+    volumes: [ embedding_cache:/root/.cache/huggingface ]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports: [ "8000:8000" ]
     depends_on:
-      postgres: {condition: service_healthy}
-      redis: {condition: service_healthy}
-      rustfs: {condition: service_started}
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      rustfs: { condition: service_started }
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
       interval: 10s
       timeout: 5s
       retries: 20
   worker:
     build: ./backend
     environment: *backend-environment
-    command: ["celery", "-A", "app.worker.celery", "worker", "--loglevel=INFO", "--concurrency=1"]
-    volumes: [embedding_cache:/root/.cache/huggingface]
+    command: [ "celery", "-A", "app.worker.celery", "worker", "--loglevel=INFO", "--concurrency=1" ]
+    volumes: [ embedding_cache:/root/.cache/huggingface ]
     depends_on:
-      postgres: {condition: service_healthy}
-      redis: {condition: service_healthy}
-      rustfs: {condition: service_started}
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      rustfs: { condition: service_started }
   frontend:
     build:
       context: ./frontend
       args:
         VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
-    ports: ["3000:80"]
+    ports: [ "3000:80" ]
     depends_on:
-      api: {condition: service_healthy}
+      api: { condition: service_healthy }
 volumes:
   postgres_data:
   redis_data:

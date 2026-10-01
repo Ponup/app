@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     openai_compatible_base_url: str = ""
     openai_compatible_api_key: str = ""
     openai_compatible_model: str = "text-embedding-3-small"
+    llm_base_url: str = ""
+    llm_api_key: str = ""
+    llm_model: str = ""
+    llm_timeout_seconds: float = 60
     max_upload_bytes: int = 25 * 1024 * 1024
 
 @lru_cache

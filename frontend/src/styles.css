@@ -60,6 +60,7 @@ h2 { font-size:19px; letter-spacing:-.02em; }
 .modal.compact{width:min(480px,100%)}.modal-head{display:flex;justify-content:space-between;align-items:start}.modal-head h2{font-size:27px;margin-bottom:20px}
 .tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:22px}.tabs button{flex:1;border:0;border-bottom:2px solid transparent;background:none;padding:9px;text-transform:capitalize;color:var(--muted);cursor:pointer}.tabs button.active{color:var(--accent);border-color:var(--accent)}
 form label { display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:600;margin-bottom:17px;color:#54534d; }
+.content-field{display:flex;flex-direction:column;gap:7px;margin-bottom:17px;color:#54534d}.content-label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;font-weight:600}.generate-button{border:1px solid #9bbab2;border-radius:7px;background:#f1f9f5;color:var(--accent);padding:5px 8px;font-size:11px;font-weight:600;cursor:pointer}.generate-button:disabled{opacity:.55;cursor:wait}
 input,textarea { width:100%;border:1px solid var(--line);border-radius:9px;background:#fff;padding:11px 12px;color:var(--ink);outline:0;resize:vertical; }
 input:focus,textarea:focus{border-color:#6d9a90;box-shadow:0 0 0 3px rgba(23,100,84,.08)}
 .dropzone{border:1px dashed #aaa69a;border-radius:12px;padding:30px;text-align:center;align-items:center;background:#faf9f4}.dropzone input{border:0;width:auto}

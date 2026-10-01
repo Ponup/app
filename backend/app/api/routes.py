@@ -11,6 +11,8 @@ from app.models import Content, ProcessingStatus, Space, Visibility
 from app.schemas import (
     ContentCreate,
     ContentDetail,
+    ContentGenerate,
+    ContentGenerateOut,
     ContentOut,
     ContentUpdate,
     SearchResponse,
@@ -19,6 +21,7 @@ from app.schemas import (
     SpaceUpdate,
 )
 from app.services import content as service
+from app.services import generation
 from app.services import storage
 from app.worker import enqueue
 
@@ -86,6 +89,12 @@ def create_content(space_id: uuid.UUID, data: ContentCreate, db: Session = Depen
     content = service.create_content(db, space_or_404(db, space_id), data)
     enqueue(content.id)
     return content
+
+
+@router.post("/spaces/{space_id}/contents/generate", response_model=ContentGenerateOut)
+def generate_content(space_id: uuid.UUID, data: ContentGenerate, db: Session = Depends(get_db)):
+    space_or_404(db, space_id)
+    return {"body": generation.generate_content(data.title, data.description, data.tags, data.kind)}
 
 
 @router.post("/spaces/{space_id}/uploads", response_model=ContentOut, status_code=201)

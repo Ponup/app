@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add automatic Markdown and JSON content drafting in the New Content modal via a configurable local or remote LLM.
+- Make the Docker API container able to reach a locally hosted Ollama instance.
 - Add a Settings tab to spaces with a confirmed option to permanently delete the space and its content.
 - Add contributor setup, testing, pull-request, and changelog guidance.
 

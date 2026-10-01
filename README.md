@@ -30,6 +30,18 @@ defaults. The first startup downloads the local embedding model. Set
 `EMBEDDING_PROVIDER=openai-compatible` and the corresponding variables in
 `.env` to use a compatible hosted endpoint instead.
 
+### Generate content automatically
+
+The New Content modal can draft Markdown or JSON from its title, description,
+and tags. Configure any OpenAI-compatible chat-completions provider on the
+server; credentials never reach the browser. For example, use Ollama with
+`LLM_BASE_URL=http://host.docker.internal:11434/v1` and
+`LLM_MODEL=llama3.2`, or set `LLM_BASE_URL`, `LLM_API_KEY`, and `LLM_MODEL`
+for OpenAI, OpenRouter, or another compatible provider. When running the API
+outside Docker, an Ollama URL is usually `http://localhost:11434/v1`.
+On Linux Docker hosts, Ponup's Compose configuration maps
+`host.docker.internal` to the host gateway automatically.
+
 ## Connect an MCP client
 
 After starting Ponup, add its Streamable HTTP endpoint to your agent's MCP

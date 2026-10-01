@@ -60,6 +60,7 @@ export const api = {
   contents: (spaceId: string) => request<Content[]>(`/api/v1/spaces/${spaceId}/contents`),
   content: (id: string) => request<Content>(`/api/v1/contents/${id}`),
   createContent: (spaceId: string, data: object) => request<Content>(`/api/v1/spaces/${spaceId}/contents`, { method: 'POST', body: JSON.stringify(data) }),
+  generateContent: (spaceId: string, data: { title: string; description: string; tags: string[]; kind: 'markdown' | 'json' }) => request<{ body: string | Record<string, unknown> | unknown[] }>(`/api/v1/spaces/${spaceId}/contents/generate`, { method: 'POST', body: JSON.stringify(data) }),
   updateContent: (id: string, data: object) => request<Content>(`/api/v1/contents/${id}`, { method: 'PATCH', body: JSON.stringify(data) }),
   deleteContent: (id: string) => request<void>(`/api/v1/contents/${id}`, { method: 'DELETE' }),
   publish: (id: string, publish: boolean) => request<Content>(`/api/v1/contents/${id}/${publish ? 'publish' : 'unpublish'}`, { method: 'POST' }),
