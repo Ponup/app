@@ -1,4 +1,10 @@
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/@ponup)
+[![X](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/ponup)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/company/ponup)
+[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/ponup)
+
 # Ponup
+
 
 Context engineering and content management for humans and AI.
 
@@ -24,6 +30,32 @@ defaults. The first startup downloads the local embedding model. Set
 `EMBEDDING_PROVIDER=openai-compatible` and the corresponding variables in
 `.env` to use a compatible hosted endpoint instead.
 
+## Connect an MCP client
+
+After starting Ponup, add its Streamable HTTP endpoint to your agent's MCP
+configuration. Most agents that use a JSON configuration accept the following
+shape:
+
+```json
+{
+  "mcpServers": {
+    "ponup": {
+      "url": "http://localhost:8000/mcp"
+    }
+  }
+}
+```
+
+Save the entry in the agent's MCP configuration file, then restart or reload
+the agent. Configuration filenames and the optional transport field vary by
+client; if a transport is required, select `streamable-http` (sometimes named
+`http`).
+
+When the agent itself runs in a container, `localhost` refers to that container.
+Use `http://host.docker.internal:8000/mcp` when the agent needs to reach Ponup
+through the host, or use Ponup's Compose service name when both applications
+share a Docker network.
+
 ## Development
 
 The backend uses Python 3.12, FastAPI, SQLAlchemy, PostgreSQL/pgvector, Celery,
@@ -47,9 +79,3 @@ not indexed. Processing is asynchronous and reported as `queued`, `processing`,
 
 The MCP server exposes Space and Content discovery, semantic search, and full
 Content CRUD over Streamable HTTP.
-
-## Marketing website
-
-The static Next.js website lives in `website/`. Run it locally with
-`cd website && npm install && npm run dev`, or generate deployable HTML with
-`npm run build`.
