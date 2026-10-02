@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-02
+
 ### Added
 
 - Analyze uploaded images with configurable Ollama or OpenAI-compatible vision models, preserving the original blob while storing descriptions, detected features, and extracted text for semantic search.
