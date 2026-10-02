@@ -22,6 +22,8 @@ export interface Content {
   visibility: 'private' | 'public'
   processing_status: 'queued' | 'processing' | 'ready' | 'failed'
   processing_error: string | null
+  image_analysis: { description: string; objects: string[]; text: string } | null
+  extracted_text: string | null
   checksum: string
   size: number
   body?: string | Record<string, unknown> | unknown[] | null

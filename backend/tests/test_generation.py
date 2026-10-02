@@ -20,7 +20,11 @@ def test_generation_parses_json_response(monkeypatch):
     monkeypatch.setattr(generation.settings, "llm_model", "test-model")
 
     def post(*args, **kwargs):
-        return httpx.Response(200, json={"choices": [{"message": {"content": json.dumps({"topic": "Guide"})}}]})
+        return httpx.Response(
+            200,
+            json={"choices": [{"message": {"content": json.dumps({"topic": "Guide"})}}]},
+            request=httpx.Request("POST", "https://llm.example/v1/chat/completions"),
+        )
 
     monkeypatch.setattr(generation.httpx, "post", post)
     assert generation.generate_content("Guide", "", [], ContentKind.json) == {"topic": "Guide"}

@@ -23,6 +23,11 @@ class Settings(BaseSettings):
     llm_api_key: str = ""
     llm_model: str = ""
     llm_timeout_seconds: float = 60
+    image_analysis_provider: str = "disabled"
+    image_analysis_model: str = ""
+    image_analysis_base_url: str = ""
+    image_analysis_api_key: str = ""
+    image_analysis_timeout_seconds: float = 120
     max_upload_bytes: int = 25 * 1024 * 1024
 
 @lru_cache

@@ -90,6 +90,8 @@ class ContentOut(BaseModel):
     visibility: Visibility
     processing_status: ProcessingStatus
     processing_error: str | None
+    image_analysis: dict[str, Any] | None
+    extracted_text: str | None
     checksum: str
     size: int
     created_at: datetime

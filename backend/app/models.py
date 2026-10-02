@@ -66,6 +66,8 @@ class Content(Base):
         Enum(ProcessingStatus, name="processing_status"), default=ProcessingStatus.queued
     )
     processing_error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    image_analysis: Mapped[dict[str, Any] | None] = mapped_column(JSON, nullable=True)
+    extracted_text: Mapped[str | None] = mapped_column(Text, nullable=True)
     object_key: Mapped[str] = mapped_column(String(500), unique=True)
     checksum: Mapped[str] = mapped_column(String(64))
     size: Mapped[int]

@@ -21,8 +21,7 @@ from app.schemas import (
     SpaceUpdate,
 )
 from app.services import content as service
-from app.services import generation
-from app.services import storage
+from app.services import generation, storage
 from app.worker import enqueue
 
 router = APIRouter(prefix="/api/v1")

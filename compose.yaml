@@ -19,6 +19,11 @@ x-backend-environment: &backend-environment
   LLM_API_KEY: ${LLM_API_KEY:-}
   LLM_MODEL: ${LLM_MODEL:-llama3.2}
   LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-60}
+  IMAGE_ANALYSIS_PROVIDER: ${IMAGE_ANALYSIS_PROVIDER:-disabled}
+  IMAGE_ANALYSIS_MODEL: ${IMAGE_ANALYSIS_MODEL:-}
+  IMAGE_ANALYSIS_BASE_URL: ${IMAGE_ANALYSIS_BASE_URL:-}
+  IMAGE_ANALYSIS_API_KEY: ${IMAGE_ANALYSIS_API_KEY:-}
+  IMAGE_ANALYSIS_TIMEOUT_SECONDS: ${IMAGE_ANALYSIS_TIMEOUT_SECONDS:-120}
 
 services:
   postgres:
@@ -71,6 +76,8 @@ services:
     environment: *backend-environment
     command: [ "celery", "-A", "app.worker.celery", "worker", "--loglevel=INFO", "--concurrency=1" ]
     volumes: [ embedding_cache:/root/.cache/huggingface ]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       postgres: { condition: service_healthy }
       redis: { condition: service_healthy }

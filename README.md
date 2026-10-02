@@ -85,9 +85,30 @@ self-hosted release. Do not expose `/api`, `/graphql`, or `/mcp` directly to an
 untrusted network. Only `/p` and `/public` are designed as public surfaces.
 
 Markdown, plain text, JSON, and PDF sources are extracted, chunked, embedded,
-and stored in PostgreSQL. Images and other uploads remain downloadable but are
-not indexed. Processing is asynchronous and reported as `queued`, `processing`,
-`ready`, or `failed`.
+and stored in PostgreSQL. Processing is asynchronous and reported as `queued`,
+`processing`, `ready`, or `failed`.
+
+### Analyze image uploads
+
+Image uploads retain their original blob and can also be analyzed for a concise
+description, visible objects/features, and legible text. Those findings are
+stored with the Content, shown in the web app, and included in semantic search.
+Image analysis is off by default so that ordinary uploads do not require a
+vision model. Enable it with an Ollama vision model, for example:
+
+```dotenv
+IMAGE_ANALYSIS_PROVIDER=ollama
+IMAGE_ANALYSIS_BASE_URL=http://host.docker.internal:11434
+IMAGE_ANALYSIS_MODEL=llava
+```
+
+When running outside Docker, use `http://localhost:11434`. Pull the selected
+model with Ollama first (for example, `ollama pull llava`). For a hosted or
+otherwise OpenAI-compatible vision endpoint, set
+`IMAGE_ANALYSIS_PROVIDER=openai-compatible` plus
+`IMAGE_ANALYSIS_BASE_URL`, `IMAGE_ANALYSIS_MODEL`, and, when required,
+`IMAGE_ANALYSIS_API_KEY`. The endpoint must accept OpenAI chat-completions
+image messages.
 
 The MCP server exposes Space and Content discovery, semantic search, and full
 Content CRUD over Streamable HTTP.

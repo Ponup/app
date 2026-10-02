@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Analyze uploaded images with configurable Ollama or OpenAI-compatible vision models, preserving the original blob while storing descriptions, detected features, and extracted text for semantic search.
 - Add automatic Markdown and JSON content drafting in the New Content modal via a configurable local or remote LLM.
 - Make the Docker API container able to reach a locally hosted Ollama instance.
 - Add a Settings tab to spaces with a confirmed option to permanently delete the space and its content.

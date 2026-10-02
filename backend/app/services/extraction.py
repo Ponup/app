@@ -6,6 +6,10 @@ from pypdf import PdfReader
 INDEXED_MIME_TYPES = {"text/markdown", "text/plain", "application/json", "application/pdf"}
 
 
+def is_image(mime_type: str) -> bool:
+    return mime_type.lower().startswith("image/")
+
+
 def extract(data: bytes, mime_type: str) -> str | None:
     if mime_type not in INDEXED_MIME_TYPES:
         return None

@@ -6,7 +6,7 @@ from sqlalchemy import delete
 from app.core.config import settings
 from app.core.db import SessionLocal
 from app.models import Content, ContentChunk, ProcessingStatus
-from app.services import embeddings, extraction, storage
+from app.services import embeddings, extraction, image_analysis, storage
 
 celery = Celery("ponup", broker=settings.redis_url, backend=settings.redis_url)
 celery.conf.update(task_track_started=True, task_acks_late=True, worker_prefetch_multiplier=1)
@@ -22,7 +22,16 @@ def process_content(content_id: str) -> None:
         content.processing_error = None
         db.commit()
         try:
-            text = extraction.extract(storage.get(content.object_key), content.mime_type)
+            raw = storage.get(content.object_key)
+            if extraction.is_image(content.mime_type):
+                analysis = image_analysis.analyze(raw, content.mime_type)
+                content.image_analysis = analysis
+                content.extracted_text = analysis["text"] if analysis else None
+                text = image_analysis.searchable_text(analysis) if analysis else None
+            else:
+                content.image_analysis = None
+                content.extracted_text = None
+                text = extraction.extract(raw, content.mime_type)
             texts = extraction.chunk(text) if text is not None else []
             vectors = embeddings.embed(texts)
             db.execute(delete(ContentChunk).where(ContentChunk.content_id == content.id))
