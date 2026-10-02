@@ -1,0 +1,12 @@
+[project]
+name = "ponup-docs"
+version = "0.2.0"
+description = "Official documentation for Ponup - Context engineering and content management for humans and AI"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "zensical>=0.0.67",
+]

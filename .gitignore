@@ -9,6 +9,8 @@ node_modules/
 .next/
 out/
 dist/
+site/
+.cache/
 coverage/
 .coverage
 *.egg-info/
