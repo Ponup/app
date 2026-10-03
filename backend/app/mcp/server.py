@@ -1,3 +1,4 @@
+import base64
 import json
 import uuid
 
@@ -8,6 +9,7 @@ from app.core.db import SessionLocal
 from app.models import Content, Space, Visibility
 from app.schemas import ContentCreate, ContentOut, ContentUpdate, SpaceCreate, SpaceOut, SpaceUpdate
 from app.services import content as service
+from app.services import storage
 from app.worker import enqueue
 
 mcp = FastMCP(
@@ -32,6 +34,8 @@ def _content(db, value: str) -> Content:
         found = db.get(Content, uuid.UUID(value))
     except ValueError:
         found = None
+    if not found:
+        found = db.scalar(select(Content).where(Content.slug == value))
     if not found:
         raise ValueError("Content not found")
     return found
@@ -102,6 +106,42 @@ def get_content(content_id: str, include_body: bool = True) -> dict:
         if include_body and value.kind.value != "file":
             result["body"] = service.body_for(value)
         return result
+
+
+@mcp.tool()
+def download_content(content_id: str) -> dict:
+    """Download the raw file data or body of Content as base64-encoded bytes with metadata."""
+    with SessionLocal() as db:
+        value = _content(db, content_id)
+        raw = storage.get(value.object_key)
+        filename = (value.custom_metadata or {}).get("filename")
+        if not filename:
+            if value.kind.value == "markdown":
+                filename = f"{value.slug}.md"
+            elif value.kind.value == "json":
+                filename = f"{value.slug}.json"
+            else:
+                filename = value.slug
+        text = (
+            raw.decode("utf-8", errors="replace")
+            if (
+                value.mime_type.startswith("text/")
+                or value.mime_type == "application/json"
+                or value.kind.value in ("markdown", "json")
+            )
+            else None
+        )
+        return {
+            "id": str(value.id),
+            "slug": value.slug,
+            "title": value.title,
+            "filename": filename,
+            "mime_type": value.mime_type,
+            "size": value.size,
+            "encoding": "base64",
+            "data": base64.b64encode(raw).decode("ascii"),
+            "text": text,
+        }
 
 
 @mcp.tool()

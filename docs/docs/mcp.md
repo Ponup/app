@@ -80,7 +80,7 @@ In client configuration settings that accept JSON-based MCP servers:
 
 ## MCP Tools Reference
 
-Ponup provides 12 built-in tools covering Space management, Content operations, and Vector Search:
+Ponup provides 13 built-in tools covering Space management, Content operations, and Vector Search:
 
 ### 1. `list_spaces`
 List all Spaces in the system.
@@ -144,13 +144,22 @@ List Content items in a space, optionally filtering by tags.
 Get Content metadata, and for authored items (Markdown/JSON), include its full body.
 
 - **Parameters**:
-  - `content_id` (*string*, required): UUID of the content.
+  - `content_id` (*string*, required): UUID or slug of the content item.
   - `include_body` (*boolean*, optional, default `true`): Whether to include the source text/JSON body.
 - **Returns**: `ContentDetail`
 
 ---
 
-### 8. `create_content`
+### 8. `download_content`
+Download the raw file data or body of Content as base64-encoded bytes alongside metadata and decoded text (when applicable).
+
+- **Parameters**:
+  - `content_id` (*string*, required): UUID or slug of the content item.
+- **Returns**: Object with `id`, `slug`, `title`, `filename`, `mime_type`, `size`, `encoding` (`"base64"`), `data` (base64-encoded string), and `text` (UTF-8 decoded string if applicable).
+
+---
+
+### 9. `create_content`
 Create authored Markdown or JSON content and queue it for vector indexing.
 
 - **Parameters**:
@@ -165,7 +174,7 @@ Create authored Markdown or JSON content and queue it for vector indexing.
 
 ---
 
-### 9. `update_content`
+### 10. `update_content`
 Update existing Content metadata or body. Supplying a new body queues re-indexing.
 
 - **Parameters**:
@@ -179,7 +188,7 @@ Update existing Content metadata or body. Supplying a new body queues re-indexin
 
 ---
 
-### 10. `publish_content`
+### 11. `publish_content`
 Publish or unpublish a Content item.
 
 - **Parameters**:
@@ -189,7 +198,7 @@ Publish or unpublish a Content item.
 
 ---
 
-### 11. `delete_content`
+### 12. `delete_content`
 Permanently delete a Content item and its embeddings.
 
 - **Parameters**:
@@ -198,7 +207,7 @@ Permanently delete a Content item and its embeddings.
 
 ---
 
-### 12. `search_content`
+### 13. `search_content`
 Perform semantic vector search to retrieve ranked relevant passages from a space.
 
 - **Parameters**:

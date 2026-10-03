@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Add `download_content` tool to the MCP server to retrieve base64-encoded raw file bytes and decoded text for any content item, supporting lookups by UUID or slug.
 - Add complete project documentation in `/docs` powered by Zensical, covering architecture, quickstart, core concepts, MCP server, AI & multimodal capabilities, REST and GraphQL APIs, configuration, and developer workflows.
 
 ## [0.2.0] - 2026-10-02

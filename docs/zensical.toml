@@ -25,6 +25,7 @@ nav = [
 ]
 
 [project.theme]
+logo = "images/ponup-logo.png"
 language = "en"
 features = [
   "announce.dismiss",
