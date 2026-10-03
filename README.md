@@ -1,12 +1,20 @@
-[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtube.com/@ponup)
-[![X](https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/ponup)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/company/ponup)
-[![Facebook](https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white)](https://facebook.com/ponup)
+<div style="text-align: center;">
+<img src="docs/docs/images/ponup-logo.png" style="max-width: 200px;" />
 
-# Ponup
+<h1 style="font-weight: bold; font-size: xxx-large;">Ponup</h1>
 
+<h2>Unifying content management and context engineering for humans, AI, and agents.</h2>
 
-Context engineering and content management for humans and AI.
+<div>
+  <a href="https://youtube.com/@ponup"><img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube" /></a>
+  <a href="https://x.com/ponup"><img src="https://img.shields.io/badge/X-000000?style=for-the-badge&logo=x&logoColor=white" alt="X" /></a>
+  <a href="https://linkedin.com/company/ponup"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
+  <a href="https://facebook.com/ponup"><img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="Facebook" /></a>
+</div>
+
+</div>
+
+---
 
 Ponup is available under the [MIT License](LICENSE). Run the open-source edition
 on your own infrastructure or use Ponup Cloud for a managed service.
