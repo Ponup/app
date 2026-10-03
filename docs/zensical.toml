@@ -17,12 +17,15 @@ nav = [
   { "Model Context Protocol (MCP)" = "mcp.md" },
   { "AI & Multimodal" = "ai-multimodal.md" },
   { "API Reference" = [
-      { "REST API" = "api/rest.md" },
-      { "GraphQL API" = "api/graphql.md" },
-  ]},
+    { "REST API" = "api/rest.md" },
+    { "GraphQL API" = "api/graphql.md" },
+  ] },
   { "Configuration & Hosting" = "configuration.md" },
   { "Development & Contributing" = "development.md" },
 ]
+
+[project.extra]
+generator = false
 
 [project.theme]
 logo = "images/ponup-logo.png"
